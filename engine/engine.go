@@ -38,18 +38,21 @@ type attackResponse struct {
 func Attack(ctx *gin.Context) {
 
 	var req attackRequest
-	var response attackResponse
 
 	if err := ctx.BindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, "Error")
 	}
 
-	response = processAttack(req)
+	resultChannel := make(chan attackResponse)
+
+	go processAttack(req, resultChannel)
+
+	response := <-resultChannel
 
 	ctx.JSON(http.StatusOK, response)
 }
 
-func processAttack(request attackRequest) attackResponse {
+func processAttack(request attackRequest, resultChan chan attackResponse) {
 	var targeter vegeta.Targeter
 
 	if request.Method == "GET" {
@@ -102,7 +105,7 @@ func processAttack(request attackRequest) attackResponse {
 		pass = false
 	}
 
-	return attackResponse{
+	resultChan <- attackResponse{
 		Latencies: latencyResponse{
 			Total: float64(metrics.Latencies.Total) / 1000000000,
 			Mean:  float64(metrics.Latencies.Mean) / 1000000000,
