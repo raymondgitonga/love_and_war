@@ -1,7 +1,7 @@
 # LOVE AND WAR : Give Your App Love By Unleashing War
 ## Simple load testing app to test your http services
 
-<img src="https://github.com/scraly/gophers/blob/main/gladiator-gopher.png" alt="gopher" width="200"/>
+<p style="text-align:center;"> <img src="https://github.com/scraly/gophers/blob/main/gladiator-gopher.png" alt="gopher" width="200"/></p>
 
 ### Installation
 
