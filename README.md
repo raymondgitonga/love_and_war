@@ -20,15 +20,15 @@ Run docker image: <code> docker run -t -p 8081:8081 love_and_war
     "pass_rate": 100
 }
 ```
-##### <code> method: </code> The http method for endpoint you are testing
+##### <code> method: </code> The http method for the endpoint you are testing
 
 ##### <code> url:  </code> The http url being attacked
 
 ##### <code> attack_duration:  </code> Duration for the attack in seconds
 
-##### <code> attack_rate:  </code> Number of attack to be performed per seconds
+##### <code> attack_rate:  </code> Number of attacks to be performed per seconds
 
-##### <code> pay_load:  </code> String representation of the payload to be sent to the url for Get endpoints send empty string
+##### <code> pay_load:  </code> String representation of the payload to be sent to the url for Get endpoints send empty string. Convert your json to string [here](https://jsontostring.com/)
 
 ##### <code> pass_rate:  </code> Success rate percentage that should be met
 
