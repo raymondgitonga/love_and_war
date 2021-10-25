@@ -1,6 +1,7 @@
 # LOVE AND WAR : Give Your App Love By Unleashing War
 ## Simple load testing app to test your http services
 
+![Gladiator](https://github.com/scraly/gophers/blob/main/gladiator-gopher.png)
 ### Installation
 
 Build docker image: <code> docker build -t love_and_war . 
