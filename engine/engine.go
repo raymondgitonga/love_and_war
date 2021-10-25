@@ -16,6 +16,7 @@ type attackRequest struct {
 	AttackDuration string `json:"attack_duration" binding:"required"`
 	AttackRate     string `json:"attack_rate" binding:"required"`
 	PayLoad        string `json:"pay_load"`
+	PassRate       int64  `json:"pass_rate"`
 }
 
 type latencyResponse struct {
@@ -31,6 +32,7 @@ type attackResponse struct {
 	Throughput  float64         `json:"throughput"`
 	Success     float64         `json:"success"`
 	StatusCodes map[string]int  `json:"status_codes"`
+	Pass        bool            `json:"pass"`
 }
 
 func Attack(ctx *gin.Context) {
@@ -91,6 +93,14 @@ func processAttack(request attackRequest) attackResponse {
 		metrics.Add(res)
 	}
 	metrics.Close()
+	success := metrics.Success * 100
+	var pass bool
+
+	if int64(success) >= request.PassRate {
+		pass = true
+	} else {
+		pass = false
+	}
 
 	return attackResponse{
 		Latencies: latencyResponse{
@@ -101,8 +111,9 @@ func processAttack(request attackRequest) attackResponse {
 		Wait:        float64(metrics.Wait) / 1000000000,
 		Requests:    float64(metrics.Requests),
 		Throughput:  metrics.Throughput,
-		Success:     metrics.Success * 100,
+		Success:     success,
 		StatusCodes: metrics.StatusCodes,
+		Pass:        pass,
 	}
 
 }
