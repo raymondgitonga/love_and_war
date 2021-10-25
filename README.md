@@ -1,8 +1,6 @@
 # LOVE AND WAR : Give Your App Love By Unleashing War
 ## Simple load testing app to test your http services
 
-![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white)
-
 ### Installation
 
 Build docker image: <code> docker build -t love_and_war . 
@@ -20,17 +18,17 @@ Run docker image: <code> docker run -t -p 8081:8081 love_and_war
     "pass_rate": 100
 }
 ```
-##### <code> method: </code> The http method for the endpoint you are testing
+#### <code> method: </code> The http method for the endpoint you are testing
 
-##### <code> url:  </code> The http url being attacked
+#### <code> url:  </code> The http url being attacked
 
-##### <code> attack_duration:  </code> Duration for the attack in seconds
+#### <code> attack_duration:  </code> Duration for the attack in seconds
 
-##### <code> attack_rate:  </code> Number of attacks to be performed per seconds
+#### <code> attack_rate:  </code> Number of attacks to be performed per seconds
 
-##### <code> pay_load:  </code> String representation of the payload to be sent to the url for Get endpoints send empty string. Convert your json to string [here](https://jsontostring.com/)
+#### <code> pay_load:  </code> String representation of the payload to be sent to the url for Get endpoints send empty string. Convert your json to string [here](https://jsontostring.com/)
 
-##### <code> pass_rate:  </code> Success rate percentage that should be met
+#### <code> pass_rate:  </code> Success rate percentage that should be met
 
 ### Attack response
 
@@ -55,21 +53,21 @@ Run docker image: <code> docker run -t -p 8081:8081 love_and_war
 
 ```
 
-##### <code> latencies: </code> To understand more about latencies read [here](https://bravenewgeek.com/everything-you-know-about-latency-is-wrong/).
+#### <code> latencies: </code> To understand more about latencies read [here](https://bravenewgeek.com/everything-you-know-about-latency-is-wrong/).
 
-##### <code> duration:  </code> How long the attack took in minutes
+#### <code> duration:  </code> How long the attack took in minutes
 
-##### <code> wait:  </code> Wait time before a response in seconds
+#### <code> wait:  </code> Wait time before a response in seconds
 
-##### <code> requests:  </code> Total number of requests that were sent
+#### <code> requests:  </code> Total number of requests that were sent
 
-##### <code> throughput:  </code> Transactions per second
+#### <code> throughput:  </code> Transactions per second
 
-##### <code> success:  </code> Percentage success rate
+#### <code> success:  </code> Percentage success rate
 
-##### <code> status_codes:  </code> Status codes received and their count
+#### <code> status_codes:  </code> Status codes received and their count
 
-##### <code> pass:  </code> If pass rate provided in request was met
+#### <code> pass:  </code> If pass rate provided in request was met
 
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
