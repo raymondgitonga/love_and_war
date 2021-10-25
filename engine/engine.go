@@ -1,15 +1,11 @@
 package engine
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	vegeta "github.com/tsenart/vegeta/lib"
-	"log"
 	"math"
 	"net/http"
-	"os/exec"
 	"strconv"
 	"time"
 )
@@ -46,65 +42,34 @@ func Attack(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, "Error")
 	}
 
-	if req.Method == "GET" {
-		response = processGet(req)
-	} else {
-		response = processPost(req)
-	}
+	response = processAttack(req)
 
 	ctx.JSON(http.StatusOK, response)
 }
 
-func processGet(req attackRequest) attackResponse {
-	cmdStr := fmt.Sprintf("echo %s %s | vegeta attack -duration=%ss -rate=%s | vegeta report --type=json",
-		req.Method, req.Url, req.AttackDuration, req.AttackRate)
+func processAttack(request attackRequest) attackResponse {
+	var targeter vegeta.Targeter
 
-	cmd := exec.Command("zsh", "-c", cmdStr)
+	if request.Method == "GET" {
+		targeter = vegeta.NewStaticTargeter(vegeta.Target{
+			Method: request.Method,
+			URL:    request.Url,
+		})
+	} else {
+		targeter = func(tgt *vegeta.Target) error {
+			if tgt == nil {
+				return vegeta.ErrNilTarget
+			}
 
-	var outb, errb bytes.Buffer
-	cmd.Stdout = &outb
-	cmd.Stderr = &errb
+			tgt.Method = request.Method
 
-	err := cmd.Run()
+			tgt.URL = request.Url
 
-	if err != nil {
-		fmt.Println("The error is " + err.Error())
-		log.Fatal(err)
-	}
-	var attackResp attackResponse
+			payloadString := fmt.Sprintf("%v", request.PayLoad)
 
-	json.Unmarshal(outb.Bytes(), &attackResp)
-
-	latencyResp := &attackResp.Latencies
-
-	return attackResponse{
-		Latencies: latencyResponse{
-			Total: latencyResp.Total / 1000000000,
-			Mean:  latencyResp.Mean / 1000000000,
-		},
-		Duration:    math.Ceil(attackResp.Duration / 1000000000),
-		Wait:        attackResp.Wait / 1000000000,
-		Requests:    attackResp.Requests,
-		Throughput:  attackResp.Throughput,
-		Success:     attackResp.Success * 100,
-		StatusCodes: attackResp.StatusCodes,
-	}
-}
-
-func processPost(request attackRequest) attackResponse {
-	targeter := func(tgt *vegeta.Target) error {
-		if tgt == nil {
-			return vegeta.ErrNilTarget
+			tgt.Body = []byte(payloadString)
+			return nil
 		}
-
-		tgt.Method = request.Method
-
-		tgt.URL = request.Url
-
-		payloadString := fmt.Sprintf("%v", request.PayLoad)
-
-		tgt.Body = []byte(payloadString)
-		return nil
 	}
 
 	attackRate, err := strconv.Atoi(request.AttackRate)
