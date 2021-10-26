@@ -82,10 +82,10 @@ func processAttack(request attackRequest, resultChan chan attackResponse) {
 	if err != nil {
 		fmt.Println("Error converting rate :" + request.AttackRate)
 	}
-	attackDuration, err := strconv.Atoi(request.AttackRate)
+	attackDuration, err := strconv.Atoi(request.AttackDuration)
 
 	if err != nil {
-		fmt.Println("Error converting rate :" + request.AttackRate)
+		fmt.Println("Error converting rate :" + request.AttackDuration)
 	}
 
 	rate := vegeta.Rate{Freq: attackRate, Per: time.Second} // change the rate here
